@@ -72,12 +72,12 @@
                 class="element"
               >
                 <b-img
-                  v-show="all.image !== null"
-                  :src="all.image"
+                  v-show="image !== null"
+                  :src="image"
                   style="height: 40px; border-radius: 8px; float: left"
                 ></b-img>
                 <b-img
-                  v-show="all.image === null"
+                  v-show="image === null"
                   :src="image"
                   style="height: 40px; border-radius: 8px; float: left"
                 ></b-img>
@@ -503,7 +503,7 @@ export default {
       name: "",
       username: "",
       password: "",
-      image: "https://i.picsum.photos/id/950/40/40.jpg",
+      image: "src/assets/key.svg",
       strongest: "",
       passwordFiledType: "password",
       eyeIcon: "eye-slash",
