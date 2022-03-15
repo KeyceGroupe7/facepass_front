@@ -619,7 +619,8 @@ export default {
             image: this.image,
             categories_id: this.categorie_selected,
             date_creation: moment(new Date()).format("YYYY-MM-DD"),
-            date_modification: moment(new Date()).format("YYYY-MM-DD")
+            date_modification: moment(new Date()).format("YYYY-MM-DD"),
+            id_user: this.credentials.token
           },
           headers
         )
