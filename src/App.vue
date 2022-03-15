@@ -569,7 +569,7 @@ export default {
       this.axios
         .post("http://localhost:3000/api/auth/signup", {
           email: this.credentials.email,
-          password: this.credentials.password,          
+          password: this.credentials.password,
 
           // date_creation: moment(new Date()).format("YYYY-MM-DD"),
         })
@@ -577,17 +577,17 @@ export default {
           console.log(response);
         })
         .catch(function(error) {
-          console.log(error);        
+          console.log(error);
           bvModalEvt.preventDefault();
 
         });
-        // Prevent modal from closing      
+        // Prevent modal from closing
 
 
       // Trigger submit handler
       this.handleSubmit();
     },
-    login(bvModalEvt) {            
+    login(bvModalEvt) {
       this.axios
         .post("http://localhost:3000/api/auth/login", {
           email: this.credentials.email,
@@ -600,16 +600,16 @@ export default {
               JSON.stringify(response.data)
             );
             this.credentials.token = localStorage.getItem("user");
-            this.getIdentifiants(); 
+            this.getIdentifiants();
             this.showWindowLog = false;
           }
         })
         .catch(function(error) {
           console.log(error);
           this.showWindowLog = true;
-        });            
-        
-        // Prevent modal from closing      
+        });
+
+        // Prevent modal from closing
 
         bvModalEvt.preventDefault();
 
