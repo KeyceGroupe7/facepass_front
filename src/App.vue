@@ -266,7 +266,7 @@
               <b-form-group
                 :state="nameState"
                 label-for="pass-input"
-                invalid-feedback="Un mot de passe est requit"
+                invalid-feedback="Un mot de passe est requis"
               >
                 <b-form-input
                   id="username-password-input"
@@ -287,7 +287,7 @@
             style="font-size: 16px"
             :hideHeaderClose="false"
             :centered="true"
-            title="Enregistrer un nouvelle élement"
+            title="Enregistrer un nouvel élement"
             @show="resetModal"
             @hidden="resetModal"
             @ok="createIdentifiants"
@@ -404,7 +404,10 @@
                 />
               </b-form>
               <div class="progression">
-                <p v-model="strong" class="strong">{{ this.strongest }}</p>
+                <p class="strong" v-if="this.element.password.length === 0">Saisissez un mot de passe</p>
+                <p class="strong" v-if="this.element.password.length >= 1 && this.element.password.length <= 9">Faible</p>
+                <p class="strong" v-if="this.element.password.length >= 10 && this.element.password.length <= 15">Moyen</p>
+                <p class="strong" v-if="this.element.password.length >= 16">Fantastique</p>
                 <b-progress
                   :value="defaut"
                   v-show="element.password.length === 0"
@@ -414,7 +417,7 @@
                 <b-progress
                   :value="faible"
                   v-show="element.password.length >= 1 && element.password.length <= 9"
-                  variant="success"
+                  variant="danger"
                   style="width: 100%; height: 10px"
                 ></b-progress>
                 <b-progress
@@ -426,7 +429,7 @@
                 <b-progress
                   :value="strong"
                   v-show="element.password.length >= 16 "
-                  variant="danger"
+                  variant="success"
                   style="width: 100%; height: 10px"
                 ></b-progress>
               </div>
@@ -699,24 +702,6 @@ export default {
     },
     // definit le text selon la longueur deu mot de passe
     check() {
-      if (this.element.password.length === 0) {
-        this.strongest = "Saisissez un mot de passe";
-      }
-      if (
-        this.element.password.length >= 1 &&
-        this.element.password.length <= 9
-      ) {
-        this.strongest = "Faible";
-      }
-      if (
-        this.element.password.length >= 10 &&
-        this.element.password.length <= 15
-      ) {
-        this.strongest = "Moyen";
-      }
-      if (this.element.password.length >= 16) {
-        this.strongest = "Fantastique";
-      }
     },
     // affiche et cache le mot de passe
     displayPassword() {
