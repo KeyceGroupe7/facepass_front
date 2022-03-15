@@ -622,6 +622,10 @@ export default {
         .then(response => {
           localStorage.removeItem("user");
           this.credentials.token = "";
+          if (!this.credentials.token) {
+            // this.identifiants = [];
+            // this.element = [];
+          }
         })
         .catch(function(error) {
           console.log(error);
@@ -721,7 +725,6 @@ export default {
       });
       if (response.status === 200 && user !== "") {
         this.identifiants = response.data;
-        this.credentials.token = user.token
       } else {
         console.log("Erreur");
       }
