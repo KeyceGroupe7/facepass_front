@@ -347,7 +347,7 @@
                 <b-form-input
                   size="sm"
                   id="image-input"
-                  :value="image"
+                  :value="this.imageItem"
                   required
                   placeholder="Image..."
                   style="height: calc(1.5em + 0.5rem); font-size: 15px;"
@@ -500,6 +500,8 @@ export default {
       username: "",
       password: "",
       image: "src/assets/key.svg",
+      idImage: 0,
+      imageItem: "http://placeimg.com/40/40/",
       strongest: "",
       passwordFiledType: "password",
       eyeIcon: "eye-slash",
@@ -538,7 +540,22 @@ export default {
       }
     };
   },
+  mounted() {
+    this.checkToken();
+    this.check();
+    this.getIdentifiants();
+    this.idImage =  Math.floor(Math.random() * 1000);
+    this.imageItem += this.idImage;
+  },
   methods: {
+    checkToken() {
+      if (this.credentials.token) {
+        this.isConnect = true;
+      } else {
+        this.isConnect = false;
+      }
+      return this.isConnect;
+    },
     // recupere les datas de chaque element sur le click de l'élément
     detailElement(data) {
       this.element = data;
@@ -616,7 +633,7 @@ export default {
             name: this.name,
             username: this.username,
             password: this.password,
-            image: this.image,
+            image: this.imageItem,
             categories_id: this.categorie_selected,
             date_creation: moment(new Date()).format("YYYY-MM-DD"),
             date_modification: moment(new Date()).format("YYYY-MM-DD")
@@ -624,6 +641,7 @@ export default {
           headers
         )
         .then(response => {
+          this.idImage++;
           this.getIdentifiants();
           console.log("Objet crée");
         })
@@ -691,12 +709,12 @@ export default {
           Authorization: "Bearer " + user.token
         }
       });
-      if (response.status === 200 && this.credentials.token !== "") {
+      if (response.status === 200 && user !== "") {
         this.identifiants = response.data;
       } else {
         console.log("Erreur");
       }
-      if (this.credentials.token === "") {
+      if (user === "") {
         console.log("Connectez-vous")
       }
     },
@@ -706,7 +724,7 @@ export default {
     // affiche et cache le mot de passe
     displayPassword() {
       this.passwordFiledType =
-        this.passwordFiledType === "password" ? "text" : "password";
+      this.passwordFiledType === "password" ? "text" : "password";
       this.eyeIcon = this.eyeIcon === "eye-slash" ? "eye" : "eye-slash";
     },
     // verifie si un champs required est null
@@ -789,10 +807,6 @@ export default {
     formatRelativeDate: function(val) {
       return moment(val).calendar();
     }
-  },
-  mounted() {
-    this.check();
-    this.getIdentifiants();
   },
   computed: {
     // get all
