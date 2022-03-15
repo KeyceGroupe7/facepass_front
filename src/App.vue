@@ -702,24 +702,6 @@ export default {
     },
     // definit le text selon la longueur deu mot de passe
     check() {
-/*      if (this.element.password.length === 0) {
-        this.strongest = "Saisissez un mot de passe";
-      };
-      if (
-        this.element.password.length >= 1 &&
-        this.element.password.length <= 9
-      ) {
-        this.strongest = "Faible";
-      };
-      if (
-        this.element.password.length >= 10 &&
-        this.element.password.length <= 15
-      ) {
-        this.strongest = "Moyen";
-      };
-      if (this.element.password.length >= 16) {
-        this.strongest = "Fantastique";
-      };*/
     },
     // affiche et cache le mot de passe
     displayPassword() {
