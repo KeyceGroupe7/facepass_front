@@ -10,7 +10,7 @@
           <div class="element-menu" style="margin-top: 15px;">
             <a href="#" v-on:click="identifiantFilterKey = 'all' ">
               <font-awesome-icon icon="th" />
-              <span style="margin-left: 10px;">Tout les éléments&nbsp;</span>
+              <span style="margin-left: 10px;">Tous les éléments&nbsp;</span>
               <div class="number-element">
                 <a href>{{ filteredElements.length }}</a>
               </div>
@@ -200,12 +200,13 @@
             ok-title="Connexion"
             cancel-title="Fermer"
             button-size="sm"
+            v-if="showWindowLog"
           >
             <form ref="form" @submit.stop.prevent="handleSubmit">
               <b-form-group
                 :state="nameState"
                 label-for="identifiant-input"
-                invalid-feedback="Une addresse mail est requit"
+                invalid-feedback="Une addresse mail est requise"
               >
                 <b-form-input
                   id="username-email-input"
@@ -219,7 +220,7 @@
               <b-form-group
                 :state="nameState"
                 label-for="pass-input"
-                invalid-feedback="Un mot de passe est requit"
+                invalid-feedback="Un mot de passe est requis"
               >
                 <b-form-input
                   id="username-password-input"
@@ -247,12 +248,13 @@
             ok-title="Créer"
             cancel-title="Fermer"
             button-size="sm"
+            v-if="showWindowSign"
           >
             <form ref="form" @submit.stop.prevent="handleSubmit">
               <b-form-group
                 :state="nameState"
                 label-for="identifiant-input"
-                invalid-feedback="Une addresse mail est requit"
+                invalid-feedback="Une addresse mail est requis"
               >
                 <b-form-input
                   id="username-email-input"
@@ -299,7 +301,7 @@
               <b-form-group
                 :state="nameState"
                 label-for="name-input"
-                invalid-feedback="Un nom est requit"
+                invalid-feedback="Un nom est requis"
               >
                 <b-form-input
                   id="name-input"
@@ -313,7 +315,7 @@
               <b-form-group
                 :state="nameState"
                 label-for="identifiant-input"
-                invalid-feedback="Un identifiant est requit"
+                invalid-feedback="Un identifiant est requis"
               >
                 <b-form-input
                   id="identifiant-input"
@@ -327,7 +329,7 @@
               <b-form-group
                 :state="nameState"
                 label-for="pass-input"
-                invalid-feedback="Un mot de passe est requit"
+                invalid-feedback="Un mot de passe est requis"
               >
                 <b-form-input
                   id="pass-input"
@@ -342,7 +344,7 @@
               <b-form-group
                 :state="nameState"
                 label-for="image-input"
-                invalid-feedback="Une image est requit"
+                invalid-feedback="Une image est requise"
               >
                 <b-form-input
                   size="sm"
@@ -467,9 +469,9 @@
                 </div>
               </transition>
               <div class="details-info">
-                <label style="margin-bottom: unset; font-size: 12px">créer</label>
+                <label style="margin-bottom: unset; font-size: 12px">Date de création</label>
                 <p style="margin-bottom: 0; font-size: 13px">Le {{element.date_creation | date()}}</p>
-                <label style="margin-bottom: unset; font-size: 12px">dernière modification</label>
+                <label style="margin-bottom: unset; font-size: 12px">Dernière modification</label>
                 <p
                   style="margin-bottom: 0; font-size: 13px"
                 >Le {{element.date_modification | date()}}</p>
@@ -495,6 +497,8 @@ export default {
       submittedNames: [],
       identifiantFilterKey: "all",
       visible: true,
+      showWindowLog: true,
+      showWindowSign: true,
       search: "",
       name: "",
       username: "",
@@ -514,7 +518,7 @@ export default {
       categorie: [
         {
           value: null,
-          text: "Séléctionner une catégories"
+          text: "Séléctionner une catégorie"
         },
         {
           value: 1,
@@ -565,7 +569,8 @@ export default {
       this.axios
         .post("http://localhost:3000/api/auth/signup", {
           email: this.credentials.email,
-          password: this.credentials.password
+          password: this.credentials.password,
+
           // date_creation: moment(new Date()).format("YYYY-MM-DD"),
         })
         .then(function(response) {
@@ -573,9 +578,12 @@ export default {
         })
         .catch(function(error) {
           console.log(error);
+          bvModalEvt.preventDefault();
+
         });
-      // Prevent modal from closing
-      bvModalEvt.preventDefault();
+        // Prevent modal from closing
+
+
       // Trigger submit handler
       this.handleSubmit();
     },
@@ -593,13 +601,18 @@ export default {
             );
             this.credentials.token = localStorage.getItem("user");
             this.getIdentifiants();
+            this.showWindowLog = false;
           }
         })
         .catch(function(error) {
           console.log(error);
+          this.showWindowLog = true;
         });
-      // Prevent modal from closing
-      bvModalEvt.preventDefault();
+
+        // Prevent modal from closing
+
+        bvModalEvt.preventDefault();
+
       // Trigger submit handler
       this.handleSubmit();
     },
@@ -609,10 +622,6 @@ export default {
         .then(response => {
           localStorage.removeItem("user");
           this.credentials.token = "";
-          if (!this.credentials.token) {
-            // this.identifiants = [];
-            // this.element = [];
-          }
         })
         .catch(function(error) {
           console.log(error);
@@ -636,7 +645,8 @@ export default {
             image: this.imageItem,
             categories_id: this.categorie_selected,
             date_creation: moment(new Date()).format("YYYY-MM-DD"),
-            date_modification: moment(new Date()).format("YYYY-MM-DD")
+            date_modification: moment(new Date()).format("YYYY-MM-DD"),
+            id_user: this.credentials.token
           },
           headers
         )
@@ -711,6 +721,7 @@ export default {
       });
       if (response.status === 200 && user !== "") {
         this.identifiants = response.data;
+        this.credentials.token = user.token
       } else {
         console.log("Erreur");
       }
@@ -756,7 +767,7 @@ export default {
     // modal de suppression
     modalDelete(element) {
       this.$bvModal
-        .msgBoxConfirm("Cette action est irreversible", {
+        .msgBoxConfirm("Cette action est irréversible", {
           title: "Êtes-vous sûr de vouloir supprimer : " + element.name,
           size: "",
           buttonSize: "sm",
