@@ -7,12 +7,9 @@
       </b-alert>
     </div>
 
-    <div class style="height:100vh">
+    <div class="vh-100 col-12">
       <div class="row" style="height: 100%">
-        <div
-          class="menu"
-          style="border-right: 1px black solid; background: #313234; width: 20%; height: 100%; padding: 30px 0 0 30px;; text-align: left; border-radius: 5px 0 0 5px;"
-        >
+        <div class="menu" style="border-right: 1px black solid; background: #313234; width: 20%; height: 100%; padding: 30px 0 0 30px; text-align: left">
           <div class="element-menu" style="margin-top: 15px;">
             <a href="#" v-on:click="identifiantFilterKey = 'all' ">
               <font-awesome-icon icon="th" />
@@ -71,20 +68,19 @@
               <b-list-group-item
                 href="#"
                 @dblclick="modalDelete(element)"
-                @click="detailElement(all)"
+                @click="detailElement(item)"
                 v-show="identifiantFilterKey === 'all' "
-                v-for="(all, i) in filteredElements"
+                v-for="(item, i) in filteredElements"
                 :key="'all'+ i"
                 class="element"
               >
                 <b-img
-                  v-show="image !== null"
-                  :src="all.image"
+                  :src="item.image"
                   style="height: 40px; border-radius: 8px; float: left"
                 ></b-img>
                 <p
                   style="margin-top: 7px; float: left; margin-bottom: 0; left: 15px; position: relative;"
-                >{{ all.name }}</p>
+                >{{ item.name }}</p>
               </b-list-group-item>
               <b-list-group-item
                 href="#"
@@ -349,10 +345,10 @@
                 <b-form-input
                   size="sm"
                   id="image-input"
-                  :value="this.imageItem"
+                  v-model="name"
                   required
                   placeholder="Image..."
-                  style="height: calc(1.5em + 0.5rem); font-size: 15px;"
+                  style="height: calc(1.5em + 0.5rem); font-size: 15px; display: none"
                 ></b-form-input>
               </b-form-group>
               <b-form-select
@@ -479,17 +475,15 @@
               </div>
             </div>
           </div>
-          <form id="form">
+          <div class="saveItem">
+            <button class="btn btn-danger" @click="deleteIdentifiant(element)">Supprimer</button>
             <button class="btn btn-primary" @click="updateIdentifiant(element)">Enregistrer</button>
-          </form>
+          </div>
         </div>
       </div>
     </div>
-
-
     <router-view></router-view>
   </div>
-
 </template>
 
 <script>
@@ -516,7 +510,7 @@ export default {
       password: "",
       image: "src/assets/key.svg",
       idImage: 0,
-      imageItem: "http://placeimg.com/40/40/",
+      urlImageItem: "",
       strongest: "",
       passwordFiledType: "password",
       inputFiledType: "input",
@@ -559,8 +553,6 @@ export default {
   mounted() {
     // this.credentials = localStorage.getItem("user");
     this.check();
-    this.idImage =  Math.floor(Math.random() * 1000);
-    this.imageItem += this.idImage;
     if (localStorage.getItem('user')) {
       this.credentials.token = localStorage.getItem('user');
       this.getIdentifiants();
@@ -659,7 +651,7 @@ export default {
             name: this.name,
             username: this.username,
             password: this.password,
-            image: this.imageItem,
+            image: "https://logo.clearbit.com/" + this.name + ".com",
             categories_id: this.categorie_selected,
             date_creation: moment(new Date()).format("YYYY-MM-DD"),
             date_modification: moment(new Date()).format("YYYY-MM-DD"),
@@ -994,7 +986,6 @@ a:hover {
   padding: 20px;
   background: #313234;
   border-bottom: black 1px solid;
-  border-radius: 0 5px 0 0;
 }
 
 .banniere svg {
@@ -1055,5 +1046,14 @@ a:hover {
 .input-details:focus {
   background: transparent;
   color: white;
+}
+
+.saveItem {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    right: 15px;
+    bottom: 15px;
+    grid-gap: 10px;
 }
 </style>
