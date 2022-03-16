@@ -64,7 +64,9 @@ export default {
   name: "login",
   data() {
     return {
-      user: {}
+      user: {},
+      activeConnection: false,
+      activeSubscribe: false
     }
   },
   mounted() {

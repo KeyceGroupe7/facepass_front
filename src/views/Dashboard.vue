@@ -1,5 +1,5 @@
 <template>
-  <div id="dashboard">
+  <div id="app">
     <!--    <div class="container" style="width: 100%; height: 90vh; border-radius: 20px">-->
     <div class style="height:100vh">
       <div class="row" style="height: 100%">
@@ -197,6 +197,7 @@
             button-size="sm"
             v-if="showWindowLog"
           >
+
             <form ref="form" @submit.stop.prevent="handleSubmit">
               <b-form-group
                 :state="nameState"
@@ -229,6 +230,10 @@
               </b-form-group>
             </form>
           </b-modal>
+          <b-alert v-model="showAlert" variant="primary" dismissible fade>
+            "test"
+          </b-alert>
+
           <!-- create user modal -->
           <b-modal
             id="modal-register"
@@ -473,6 +478,11 @@
               </div>
             </div>
           </div>
+          <form id="form">
+            <i>Modifier</i>
+            <input type="type" id="idname" v-model="element.name">
+            <button @click="updateIdentifiant(element)">Enregistrer</button>
+          </form>
         </div>
       </div>
     </div>
@@ -487,7 +497,7 @@
 var moment = require("moment");
 moment.locale("fr");
 export default {
-  name: "app",
+  name: "dashboard",
   data() {
     return {
       moment: moment,
@@ -498,6 +508,8 @@ export default {
       visible: true,
       showWindowLog: true,
       showWindowSign: true,
+      showAlert: false,
+
       search: "",
       name: "",
       username: "",
@@ -569,6 +581,8 @@ export default {
         })
         .then(function(response) {
           console.log(response);
+          console.log(this.showAlert);
+          this.showAlert=true;
         })
         .catch(function(error) {
           console.log(error);
@@ -596,6 +610,7 @@ export default {
             this.credentials.token = localStorage.getItem("user");
             this.getIdentifiants();
             this.showWindowLog = false;
+            this.showAlert=true;
           }
         })
         .catch(function(error) {
@@ -651,6 +666,8 @@ export default {
           this.idImage++;
           this.getIdentifiants();
           console.log("Objet crée");
+          this.showAlert=true;
+
         })
         .catch(function(error) {
           console.log(error);
@@ -744,6 +761,7 @@ export default {
     handleSubmit() {
       // Exit when the form isn't valid
       if (!this.checkFormValidity()) {
+
         return;
       }
       // Push the name to submitted names
