@@ -152,10 +152,7 @@
             </b-list-group>
           </div>
         </div>
-        <div
-          class="details"
-          style="color: white; background: #1F2022; width: 60%; height: 100%; border-radius: 0 5px 5px 0;"
-        >
+        <div class="details" style="color: white; background: #1F2022; width: 60%; height: 100%; border-radius: 0 5px 5px 0;" v-on:keyup.enter="onValidate">
           <div class="banniere">
             <font-awesome-icon
               icon="plus"
@@ -372,7 +369,8 @@
                 style="height: 40px; border-radius: 8px"
               ></b-img>
               <b-img v-else :src="element.image" style="height: 40px; border-radius: 8px"></b-img>
-              <h3 style="margin-left: 20px; font-weight: bold">{{element.name}}</h3>
+              <h3 style="margin-left: 20px; font-weight: bold" @dblclick="editNameItem('input')" v-if="nameItem === 'h3'">{{element.name}}</h3>
+              <input style="margin-left: 20px" class="form-control form-control-sm" v-else id="idname" v-model="element.name">
             </div>
             <div
               class="detail-value"
@@ -480,17 +478,16 @@
           </div>
           <form id="form">
             <i>Modifier</i>
-            <input type="type" id="idname" v-model="element.name">
-            <button @click="updateIdentifiant(element)">Enregistrer</button>
+            <button class="btn btn-primary" @click="updateIdentifiant(element)">Enregistrer</button>
           </form>
         </div>
       </div>
     </div>
 
-    
+
     <router-view></router-view>
   </div>
-   
+
 </template>
 
 <script>
@@ -510,6 +507,7 @@ export default {
       showWindowSign: true,
       showAlert: false,
 
+      nameItem: "h3",
       search: "",
       name: "",
       username: "",
@@ -519,6 +517,7 @@ export default {
       imageItem: "http://placeimg.com/40/40/",
       strongest: "",
       passwordFiledType: "password",
+      inputFiledType: "input",
       eyeIcon: "eye-slash",
       count: 0,
       defaut: 2,
@@ -570,6 +569,9 @@ export default {
     detailElement(data) {
       this.element = data;
       this.check();
+    },
+    onValidate() {
+      this.nameItem = 'h3'
     },
     createUsername(bvModalEvt) {
       this.axios
@@ -750,6 +752,13 @@ export default {
       this.passwordFiledType =
       this.passwordFiledType === "password" ? "text" : "password";
       this.eyeIcon = this.eyeIcon === "eye-slash" ? "eye" : "eye-slash";
+    },
+    editNameItem(typeChamp) {
+      if (typeChamp === 'h3') {
+        this.nameItem = 'h3'
+      } else {
+        this.nameItem = "input";
+      }
     },
     // verifie si un champs required est null
     checkFormValidity() {
