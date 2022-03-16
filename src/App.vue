@@ -161,6 +161,7 @@
           class="details"
           style="color: white; background: #1F2022; width: 60%; height: 100%; border-radius: 0 5px 5px 0;"
         >
+
           <div class="banniere">
             <font-awesome-icon
               icon="plus"
@@ -303,6 +304,7 @@
                 label-for="name-input"
                 invalid-feedback="Un nom est requis"
               >
+                zozozo
                 <b-form-input
                   id="name-input"
                   v-model="name"
@@ -475,6 +477,11 @@
                 <p
                   style="margin-bottom: 0; font-size: 13px"
                 >Le {{element.date_modification | date()}}</p>
+                <form id="form">
+                <i>Modifier</i>
+                <input type="type" id="idname" v-model="element.name">
+                <button @click="updateIdentifiant(element)">Enregistrer</button>
+                </form>
               </div>
             </div>
           </div>
