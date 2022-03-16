@@ -1,6 +1,12 @@
 <template>
   <div id="app">
-    <!--    <div class="container" style="width: 100%; height: 90vh; border-radius: 20px">-->
+    <div class="notif">
+      <!--    <div class="container" style="width: 100%; height: 90vh; border-radius: 20px">-->
+      <b-alert v-model="showAlert" variant="primary" class="notification-custom" dismissible fade>
+      {{ this.messAlert }}
+      </b-alert>
+    </div>
+
     <div class style="height:100vh">
       <div class="row" style="height: 100%">
         <div
@@ -152,7 +158,7 @@
             </b-list-group>
           </div>
         </div>
-        <div class="details" style="color: white; background: #1F2022; width: 60%; height: 100%; border-radius: 0 5px 5px 0;" v-on:keyup.enter="onValidate">
+        <div class="details" style="color: white; background: #1F2022; width: 60%; height: 100%; border-radius: 0 5px 5px 0;" v-on:keyup.enter="onValidate(element)">
           <div class="banniere">
             <font-awesome-icon
               icon="plus"
@@ -227,9 +233,6 @@
               </b-form-group>
             </form>
           </b-modal>
-          <b-alert v-model="showAlert" variant="primary" dismissible fade>
-            "test"
-          </b-alert>
 
           <!-- create user modal -->
           <b-modal
@@ -477,7 +480,6 @@
             </div>
           </div>
           <form id="form">
-            <i>Modifier</i>
             <button class="btn btn-primary" @click="updateIdentifiant(element)">Enregistrer</button>
           </form>
         </div>
@@ -506,7 +508,7 @@ export default {
       showWindowLog: true,
       showWindowSign: true,
       showAlert: false,
-
+      messAlert: "",
       nameItem: "h3",
       search: "",
       name: "",
@@ -570,8 +572,11 @@ export default {
       this.element = data;
       this.check();
     },
-    onValidate() {
-      this.nameItem = 'h3'
+    onValidate(element) {
+      this.nameItem = 'h3';
+      this.updateIdentifiant(element);
+
+
     },
     createUsername(bvModalEvt) {
       this.axios
@@ -583,8 +588,6 @@ export default {
         })
         .then(function(response) {
           console.log(response);
-          console.log(this.showAlert);
-          this.showAlert=true;
         })
         .catch(function(error) {
           console.log(error);
@@ -612,7 +615,7 @@ export default {
             this.credentials.token = localStorage.getItem("user");
             this.getIdentifiants();
             this.showWindowLog = false;
-            this.showAlert=true;
+
           }
         })
         .catch(function(error) {
@@ -668,7 +671,12 @@ export default {
           this.idImage++;
           this.getIdentifiants();
           console.log("Objet crée");
+          this.messAlert =       "Nouvel identifiant ajouté : " + this.name;
+          console.log(this.messAlert);
           this.showAlert=true;
+          setTimeout(()=>{
+            this.showAlert=false;
+          },6000);
 
         })
         .catch(function(error) {
@@ -703,8 +711,13 @@ export default {
           headers
         )
         .then(response => {
-          console.log("Objet modifié");
           this.getIdentifiants();
+          this.messAlert = "Identifiant modifié : " + element.name;
+          console.log(element.name);
+          this.showAlert=true;
+          setTimeout(()=>{
+            this.showAlert=false;
+          },6000);
         })
         .catch(function(error) {
           console.log(error);
@@ -965,6 +978,16 @@ a:hover {
   text-align: center;
   border: 1px solid black;
   border-radius: 8px;
+}
+
+.notif{
+  display: flex;
+  justify-content: center;
+}
+
+.notification-custom {
+  position: absolute;
+  top: 40px;
 }
 
 .banniere {
