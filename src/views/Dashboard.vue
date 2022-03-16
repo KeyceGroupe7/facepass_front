@@ -480,7 +480,7 @@
             </div>
           </div>
           <form id="form">
-            <button class="btn btn-primary" @click="updateIdentifiant(element)">Enregistrer</button>
+            <button type="button" class="btn btn-primary" @click="updateIdentifiant(element)">Enregistrer</button>
           </form>
         </div>
       </div>
