@@ -202,6 +202,7 @@
             button-size="sm"
             v-if="showWindowLog"
           >
+
             <form ref="form" @submit.stop.prevent="handleSubmit">
               <b-form-group
                 :state="nameState"
@@ -234,6 +235,10 @@
               </b-form-group>
             </form>
           </b-modal>
+          <b-alert v-model="showAlert" variant="primary" dismissible fade>
+            "test"
+          </b-alert>
+
           <!-- create user modal -->
           <b-modal
             id="modal-register"
@@ -499,6 +504,8 @@ export default {
       visible: true,
       showWindowLog: true,
       showWindowSign: true,
+      showAlert: false,
+
       search: "",
       name: "",
       username: "",
@@ -575,6 +582,8 @@ export default {
         })
         .then(function(response) {
           console.log(response);
+          console.log(this.showAlert);
+          this.showAlert=true;
         })
         .catch(function(error) {
           console.log(error);
@@ -602,6 +611,7 @@ export default {
             this.credentials.token = localStorage.getItem("user");
             this.getIdentifiants();
             this.showWindowLog = false;
+            this.showAlert=true;
           }
         })
         .catch(function(error) {
@@ -658,6 +668,8 @@ export default {
           this.idImage++;
           this.getIdentifiants();
           console.log("Objet crée");
+          this.showAlert=true;
+
         })
         .catch(function(error) {
           console.log(error);
@@ -751,6 +763,7 @@ export default {
     handleSubmit() {
       // Exit when the form isn't valid
       if (!this.checkFormValidity()) {
+
         return;
       }
       // Push the name to submitted names
