@@ -16,11 +16,8 @@
         </b-collapse>
       </b-navbar>
     </div>
-
-    
     <router-view></router-view>
   </div>
-   
 </template>
 
 <script>
