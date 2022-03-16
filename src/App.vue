@@ -73,12 +73,7 @@
               >
                 <b-img
                   v-show="image !== null"
-                  :src="image"
-                  style="height: 40px; border-radius: 8px; float: left"
-                ></b-img>
-                <b-img
-                  v-show="image === null"
-                  :src="image"
+                  :src="all.image"
                   style="height: 40px; border-radius: 8px; float: left"
                 ></b-img>
                 <p
@@ -166,23 +161,23 @@
               icon="plus"
               v-b-modal.modal-prevent-closing
               style="margin-left: 10px"
-              v-show="this.credentials.token !== '' "
+              v-show="this.credentials.token !== ''"
             />
             <font-awesome-icon
-              v-show="this.credentials.token !== '' "
+              v-show="this.credentials.token !== ''"
               icon="sign-out-alt"
               @click="logout"
               style="margin-left: 10px"
             />
             <font-awesome-icon
               icon="key"
-              v-show="this.credentials.token === '' "
+              v-show="this.credentials.token === ''"
               v-b-modal.modal-login
               style="margin-left: 10px"
             />
             <font-awesome-icon
               icon="user"
-              v-show="this.credentials.token === '' "
+              v-show="this.credentials.token === ''"
               v-b-modal.modal-register
             />
           </div>
@@ -545,21 +540,16 @@ export default {
     };
   },
   mounted() {
-    this.checkToken();
+    // this.credentials = localStorage.getItem("user");
     this.check();
-    this.getIdentifiants();
     this.idImage =  Math.floor(Math.random() * 1000);
     this.imageItem += this.idImage;
+    if (localStorage.getItem('user')) {
+      this.credentials.token = localStorage.getItem('user');
+      this.getIdentifiants();
+    }
   },
   methods: {
-    checkToken() {
-      if (this.credentials.token) {
-        this.isConnect = true;
-      } else {
-        this.isConnect = false;
-      }
-      return this.isConnect;
-    },
     // recupere les datas de chaque element sur le click de l'élément
     detailElement(data) {
       this.element = data;
@@ -595,7 +585,7 @@ export default {
         })
         .then(response => {
           if (response.data.token) {
-            const isConnect = localStorage.setItem(
+            localStorage.setItem(
               "user",
               JSON.stringify(response.data)
             );
@@ -622,10 +612,9 @@ export default {
         .then(response => {
           localStorage.removeItem("user");
           this.credentials.token = "";
-          if (!this.credentials.token) {
-            // this.identifiants = [];
-            // this.element = [];
-          }
+          this.showWindowLog = true;
+          localStorage.clear();
+          this.identifiants = [];
         })
         .catch(function(error) {
           console.log(error);
