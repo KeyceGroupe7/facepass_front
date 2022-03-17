@@ -1,12 +1,15 @@
 <template>
   <div id="app">
-    <!--    <div class="container" style="width: 100%; height: 90vh; border-radius: 20px">-->
-    <div class style="height:100vh">
+    <div class="notif">
+      <!--    <div class="container" style="width: 100%; height: 90vh; border-radius: 20px">-->
+      <b-alert v-model="showAlert" variant="primary" class="notification-custom" dismissible fade>
+      {{ this.messAlert }}
+      </b-alert>
+    </div>
+
+    <div class="vh-100 col-12">
       <div class="row" style="height: 100%">
-        <div
-          class="menu"
-          style="border-right: 1px black solid; background: #313234; width: 20%; height: 100%; padding: 30px 0 0 30px;; text-align: left; border-radius: 5px 0 0 5px;"
-        >
+        <div class="menu" style="border-right: 1px black solid; background: #313234; width: 20%; height: 100%; padding: 30px 0 0 30px; text-align: left">
           <div class="element-menu" style="margin-top: 15px;">
             <a href="#" v-on:click="identifiantFilterKey = 'all' ">
               <font-awesome-icon icon="th" />
@@ -76,20 +79,19 @@
               <b-list-group-item
                 href="#"
                 @dblclick="modalDelete(element)"
-                @click="detailElement(all)"
+                @click="detailElement(item)"
                 v-show="identifiantFilterKey === 'all' "
-                v-for="(all, i) in filteredElements"
+                v-for="(item, i) in filteredElements"
                 :key="'all'+ i"
                 class="element"
               >
                 <b-img
-                  v-show="image !== null"
-                  :src="all.image"
+                  :src="item.image"
                   style="height: 40px; border-radius: 8px; float: left"
                 ></b-img>
                 <p
                   style="margin-top: 7px; float: left; margin-bottom: 0; left: 15px; position: relative;"
-                >{{ all.name }}</p>
+                >{{ item.name }}</p>
               </b-list-group-item>
               <b-list-group-item
                 href="#"
@@ -163,10 +165,7 @@
             </b-list-group>
           </div>
         </div>
-        <div
-          class="details"
-          style="color: white; background: #1F2022; width: 60%; height: 100%; border-radius: 0 5px 5px 0;"
-        >
+        <div class="details" style="color: white; background: #1F2022; width: 60%; height: 100%; border-radius: 0 5px 5px 0;" v-on:keyup.enter="onValidate(element)">
           <div class="banniere">
             <font-awesome-icon
               icon="plus"
@@ -241,9 +240,6 @@
               </b-form-group>
             </form>
           </b-modal>
-          <b-alert v-model="showAlert" variant="primary" dismissible fade>
-            "test"
-          </b-alert>
 
           <!-- create user modal -->
           <b-modal
@@ -360,10 +356,10 @@
                 <b-form-input
                   size="sm"
                   id="image-input"
-                  :value="this.imageItem"
+                  v-model="name"
                   required
                   placeholder="Image..."
-                  style="height: calc(1.5em + 0.5rem); font-size: 15px;"
+                  style="height: calc(1.5em + 0.5rem); font-size: 15px; display: none"
                 ></b-form-input>
               </b-form-group>
               <b-form-select
@@ -383,7 +379,8 @@
                 style="height: 40px; border-radius: 8px"
               ></b-img>
               <b-img v-else :src="element.image" style="height: 40px; border-radius: 8px"></b-img>
-              <h3 style="margin-left: 20px; font-weight: bold">{{element.name}}</h3>
+              <h3 style="margin-left: 20px; font-weight: bold" @dblclick="editNameItem('input')" v-if="nameItem === 'h3'">{{element.name}}</h3>
+              <input style="margin-left: 20px" class="form-control form-control-sm" v-else id="idname" v-model="element.name">
             </div>
             <div
               class="detail-value"
@@ -489,19 +486,15 @@
               </div>
             </div>
           </div>
-          <form id="form">
-            <i>Modifier</i>
-            <input type="type" id="idname" v-model="element.name">
-            <button @click="updateIdentifiant(element)">Enregistrer</button>
-          </form>
+          <div class="saveItem">
+            <button class="btn btn-danger" @click="deleteIdentifiant(element)">Supprimer</button>
+            <button class="btn btn-primary" @click="updateIdentifiant(element)">Enregistrer</button>
+          </div>
         </div>
       </div>
     </div>
-
-    
     <router-view></router-view>
   </div>
-   
 </template>
 
 <script>
@@ -521,15 +514,18 @@ export default {
       showWindowSign: true,
       showAlert: false,
       user: '',
+      messAlert: "",
+      nameItem: "h3",
       search: "",
       name: "",
       username: "",
       password: "",
       image: "src/assets/key.svg",
       idImage: 0,
-      imageItem: "http://placeimg.com/40/40/",
+      urlImageItem: "",
       strongest: "",
       passwordFiledType: "password",
+      inputFiledType: "input",
       eyeIcon: "eye-slash",
       count: 0,
       defaut: 2,
@@ -585,8 +581,6 @@ export default {
     }
 
     this.check();
-    this.idImage =  Math.floor(Math.random() * 1000);
-    this.imageItem += this.idImage;
     if (localStorage.getItem('user')) {
       this.credentials.token = localStorage.getItem('user');
       this.getIdentifiants();
@@ -598,6 +592,12 @@ export default {
       this.element = data;
       this.check();
     },
+    onValidate(element) {
+      this.nameItem = 'h3';
+      this.updateIdentifiant(element);
+
+
+    },
     createUsername(bvModalEvt) {
       this.axios
         .post("http://localhost:3000/api/auth/signup", {
@@ -608,8 +608,6 @@ export default {
         })
         .then(function(response) {
           console.log(response);
-          console.log(this.showAlert);
-          this.showAlert=true;
         })
         .catch(function(error) {
           console.log(error);
@@ -637,7 +635,7 @@ export default {
             this.credentials.token = localStorage.getItem("user");
             this.getIdentifiants();
             this.showWindowLog = false;
-            this.showAlert=true;
+
           }
         })
         .catch(function(error) {
@@ -682,7 +680,7 @@ export default {
             name: this.name,
             username: this.username,
             password: this.password,
-            image: this.imageItem,
+            image: "https://logo.clearbit.com/" + this.name + ".com",
             categories_id: this.categorie_selected,
             date_creation: moment(new Date()).format("YYYY-MM-DD"),
             date_modification: moment(new Date()).format("YYYY-MM-DD"),
@@ -694,7 +692,12 @@ export default {
           this.idImage++;
           this.getIdentifiants();
           console.log("Objet crée");
+          this.messAlert =       "Nouvel identifiant ajouté : " + this.name;
+          console.log(this.messAlert);
           this.showAlert=true;
+          setTimeout(()=>{
+            this.showAlert=false;
+          },6000);
 
         })
         .catch(function(error) {
@@ -729,8 +732,13 @@ export default {
           headers
         )
         .then(response => {
-          console.log("Objet modifié");
           this.getIdentifiants();
+          this.messAlert = "Identifiant modifié : " + element.name;
+          console.log(element.name);
+          this.showAlert=true;
+          setTimeout(()=>{
+            this.showAlert=false;
+          },6000);
         })
         .catch(function(error) {
           console.log(error);
@@ -778,6 +786,13 @@ export default {
       this.passwordFiledType =
       this.passwordFiledType === "password" ? "text" : "password";
       this.eyeIcon = this.eyeIcon === "eye-slash" ? "eye" : "eye-slash";
+    },
+    editNameItem(typeChamp) {
+      if (typeChamp === 'h3') {
+        this.nameItem = 'h3'
+      } else {
+        this.nameItem = "input";
+      }
     },
     // verifie si un champs required est null
     checkFormValidity() {
@@ -989,11 +1004,20 @@ a:hover {
   border-radius: 8px;
 }
 
+.notif{
+  display: flex;
+  justify-content: center;
+}
+
+.notification-custom {
+  position: absolute;
+  top: 40px;
+}
+
 .banniere {
   padding: 20px;
   background: #313234;
   border-bottom: black 1px solid;
-  border-radius: 0 5px 0 0;
 }
 
 .banniere svg {
@@ -1054,5 +1078,14 @@ a:hover {
 .input-details:focus {
   background: transparent;
   color: white;
+}
+
+.saveItem {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    right: 15px;
+    bottom: 15px;
+    grid-gap: 10px;
 }
 </style>
