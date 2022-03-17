@@ -2,17 +2,14 @@
   <div id="app">
     <div class="notif">
       <!--    <div class="container" style="width: 100%; height: 90vh; border-radius: 20px">-->
-      <b-alert v-model="showAlert" variant="primary" class="notification-custom" dismissible fade>
+      <b-alert v-model="showAlert" variant="primary" class="notification-custom prioAlert" dismissible fade>
       {{ this.messAlert }}
       </b-alert>
     </div>
 
-    <div class style="height:100vh">
+    <div class="vh-100 col-12">
       <div class="row" style="height: 100%">
-        <div
-          class="menu"
-          style="border-right: 1px black solid; background: #313234; width: 20%; height: 100%; padding: 30px 0 0 30px;; text-align: left; border-radius: 5px 0 0 5px;"
-        >
+        <div class="menu" style="border-right: 1px black solid; background: #313234; width: 20%; height: 100%; padding: 30px 0 0 30px; text-align: left">
           <div class="element-menu" style="margin-top: 15px;">
             <a href="#" v-on:click="identifiantFilterKey = 'all' ">
               <font-awesome-icon icon="th" />
@@ -27,11 +24,11 @@
               <span style="margin-left: 10px;">Favoris</span>
             </a>
             <br />
-            <a
-              href="#"
+            <div
+              class="toggleMenu"
               v-b-toggle.categories
               style="cursor: pointer; position: relative; top: 20px"
-            >CATÉGORIES</a>
+            >CATÉGORIES</div>
             <b-collapse id="categories" class="categories">
               <a href="#" id="categorie-inner" v-on:click="identifiantFilterKey = 'identifiant' ">
                 <font-awesome-icon icon="key" />
@@ -48,6 +45,17 @@
                 <span style="margin-left: 10px;">cartes de crédit</span>
               </a>
               <br />
+            </b-collapse>
+            <div
+              class="toggleMenu"
+              v-b-toggle.faceRecognize
+              style="cursor: pointer; position: relative; top: 20px"
+            >RECONNAISSANCE FACIALE</div>
+            <b-collapse id="faceRecognize" class="categories">
+              <a href="#">
+                <font-awesome-icon icon="user" />
+                <span style="margin-left: 10px;">Configurer</span>
+              </a>
             </b-collapse>
           </div>
         </div>
@@ -71,20 +79,19 @@
               <b-list-group-item
                 href="#"
                 @dblclick="modalDelete(element)"
-                @click="detailElement(all)"
+                @click="detailElement(item)"
                 v-show="identifiantFilterKey === 'all' "
-                v-for="(all, i) in filteredElements"
+                v-for="(item, i) in filteredElements"
                 :key="'all'+ i"
                 class="element"
               >
                 <b-img
-                  v-show="image !== null"
-                  :src="all.image"
+                  :src="item.image"
                   style="height: 40px; border-radius: 8px; float: left"
                 ></b-img>
                 <p
                   style="margin-top: 7px; float: left; margin-bottom: 0; left: 15px; position: relative;"
-                >{{ all.name }}</p>
+                >{{ item.name }}</p>
               </b-list-group-item>
               <b-list-group-item
                 href="#"
@@ -349,10 +356,10 @@
                 <b-form-input
                   size="sm"
                   id="image-input"
-                  :value="this.imageItem"
+                  v-model="name"
                   required
                   placeholder="Image..."
-                  style="height: calc(1.5em + 0.5rem); font-size: 15px;"
+                  style="height: calc(1.5em + 0.5rem); font-size: 15px; display: none"
                 ></b-form-input>
               </b-form-group>
               <b-form-select
@@ -479,17 +486,15 @@
               </div>
             </div>
           </div>
-          <form id="form">
-            <button type="button" class="btn btn-primary" @click="updateIdentifiant(element)">Enregistrer</button>
-          </form>
+          <div class="saveItem">
+            <button class="btn btn-danger" @click="deleteIdentifiant(element)">Supprimer</button>
+            <button class="btn btn-primary" @click="onValidate(element)">Enregistrer</button>
+          </div>
         </div>
       </div>
     </div>
-
-
     <router-view></router-view>
   </div>
-
 </template>
 
 <script>
@@ -508,6 +513,7 @@ export default {
       showWindowLog: true,
       showWindowSign: true,
       showAlert: false,
+      user: '',
       messAlert: "",
       nameItem: "h3",
       search: "",
@@ -516,7 +522,7 @@ export default {
       password: "",
       image: "src/assets/key.svg",
       idImage: 0,
-      imageItem: "http://placeimg.com/40/40/",
+      urlImageItem: "",
       strongest: "",
       passwordFiledType: "password",
       inputFiledType: "input",
@@ -558,9 +564,23 @@ export default {
   },
   mounted() {
     // this.credentials = localStorage.getItem("user");
+    if (localStorage) {
+      this.user = JSON.parse(localStorage.getItem("user"));
+      if(!this.user){
+        console.log('pas co');
+        this.$router.push({ name: 'Login' })
+      }else if(this.user.token){
+        console.log('connecté');
+        console.log(this.user.token);
+      }else{
+        this.$router.push({ name: 'Login' })
+      }
+    }else{
+      console.log('pas co');
+      this.$router.push({ name: 'Login' })
+    }
+
     this.check();
-    this.idImage =  Math.floor(Math.random() * 1000);
-    this.imageItem += this.idImage;
     if (localStorage.getItem('user')) {
       this.credentials.token = localStorage.getItem('user');
       this.getIdentifiants();
@@ -639,6 +659,7 @@ export default {
           this.showWindowLog = true;
           localStorage.clear();
           this.identifiants = [];
+          this.$router.push({ name: 'Login' });
         })
         .catch(function(error) {
           console.log(error);
@@ -659,7 +680,7 @@ export default {
             name: this.name,
             username: this.username,
             password: this.password,
-            image: this.imageItem,
+            image: "https://logo.clearbit.com/" + this.name + ".com",
             categories_id: this.categorie_selected,
             date_creation: moment(new Date()).format("YYYY-MM-DD"),
             date_modification: moment(new Date()).format("YYYY-MM-DD"),
@@ -735,6 +756,12 @@ export default {
         .then(response => {
           console.log("Objet supprimé");
           this.getIdentifiants();
+          this.messAlert = "L'identifiant suivant a été supprimé : " + element.name;
+          console.log(element.name);
+          this.showAlert=true;
+          setTimeout(()=>{
+            this.showAlert=false;
+          },6000);
         })
         .catch(function(error) {
           console.log(error);
@@ -927,6 +954,9 @@ a {
   color: white;
   text-decoration: none !important;
 }
+.toggleMenu {
+  color: white;
+}
 
 a:hover {
   color: #42b983;
@@ -980,6 +1010,10 @@ a:hover {
   border-radius: 8px;
 }
 
+.prioAlert{
+  z-index: 2;
+}
+
 .notif{
   display: flex;
   justify-content: center;
@@ -994,7 +1028,6 @@ a:hover {
   padding: 20px;
   background: #313234;
   border-bottom: black 1px solid;
-  border-radius: 0 5px 0 0;
 }
 
 .banniere svg {
@@ -1055,5 +1088,14 @@ a:hover {
 .input-details:focus {
   background: transparent;
   color: white;
+}
+
+.saveItem {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    right: 15px;
+    bottom: 15px;
+    grid-gap: 10px;
 }
 </style>
