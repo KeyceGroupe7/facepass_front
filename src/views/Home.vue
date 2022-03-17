@@ -20,21 +20,43 @@
           </b-container>
         <b-container>
           <div class="row justify-content-between">
-            <article class="col-3 custom-card card"> 
-              <img src="../assets/icon-scan.png" title="Reconnaissance faciale" class="image">
+            <article class="col-3 custom-card card">
+              <img src="../assets/icon-scan.png" title="Gestionnaire sécurité et chiffré" class="image">
             </article>
             <article class="col-3 custom-card card">
               <img src="../assets/icon-scan.png" title="Reconnaissance faciale" class="image">
             </article>
             <article class="col-3 custom-card card">
-              <img src="../assets/icon-scan.png" title="Reconnaissance faciale" class="image">
+              <img src="../assets/icon-scan.png" title="Projet open source" class="image">
             </article>
           </div>
         </b-container>
         </section>
-    </div>
-
-
+        <section>
+            <footer class="bas">
+              <div class="row justify-content-between">
+                <div class="col-3 bas">
+                  <h3>Content</h3>
+                  <li>test</li>
+                  <li>test2</li>
+                  <li>test3</li>
+                </div>
+                <div class="col-3 bas">
+                  <h3>Content</h3>
+                  <li>test</li>
+                  <li>test2</li>
+                  <li>test3</li>
+                </div>
+                <div class="col-3 bas">
+                  <h3>Content</h3>
+                  <li>test</li>
+                  <li>test2</li>
+                  <li>test3</li>
+                </div>
+              </div>
+            </footer>
+        </section>
+    </div> 
    
 </template>
 
@@ -94,6 +116,12 @@ background-color: #353a40;
   align-self: center;
   margin-top: 15%;
   margin-bottom: 15%;
+}
+
+.bas{
+  background-color: #261968;
+  color: white;
+  padding: 3%;
 }
 
 </style>
