@@ -90,9 +90,9 @@
         </b-form-group>
       </div>
     </b-container>
-    
+
   </div>
-   
+
 </template>
 
 <script>
@@ -137,14 +137,14 @@ export default {
               JSON.stringify(response.data)
             );
             this.credentials.token = localStorage.getItem("user");
-            this.$router.push({ name: 'Dashboard' })
+            this.$router.push({ name: 'Dashboard' });
 
           }
         })
         .catch(function(error) {
           console.log('ooooooooooooooooooooh');
           console.log(error);
-          
+
         });
         console.log(this.passwordAlert);
           this.passwordAlert = 'Identifiants inconnus'
@@ -178,7 +178,7 @@ export default {
           this.newPasswordConfirmAlert = 'Les mots de passes ne sont pas identiques'
         }
       }
-      
+
     },
   },
   created() {
