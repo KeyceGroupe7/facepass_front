@@ -580,7 +580,6 @@ export default {
       this.$router.push({ name: 'Login' })
     }
 
-    this.check();
     if (localStorage.getItem('user')) {
       this.credentials.token = localStorage.getItem('user');
       this.getIdentifiants();
@@ -616,36 +615,6 @@ export default {
         });
         // Prevent modal from closing
 
-
-      // Trigger submit handler
-      this.handleSubmit();
-    },
-    login(bvModalEvt) {
-      this.axios
-        .post("http://localhost:3000/api/auth/login", {
-          email: this.credentials.email,
-          password: this.credentials.password
-        })
-        .then(response => {
-          if (response.data.token) {
-            localStorage.setItem(
-              "user",
-              JSON.stringify(response.data)
-            );
-            this.credentials.token = localStorage.getItem("user");
-            this.getIdentifiants();
-            this.showWindowLog = false;
-
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-          this.showWindowLog = true;
-        });
-
-        // Prevent modal from closing
-
-        bvModalEvt.preventDefault();
 
       // Trigger submit handler
       this.handleSubmit();
@@ -692,12 +661,14 @@ export default {
           this.idImage++;
           this.getIdentifiants();
           console.log("Objet crée");
-          this.messAlert =       "Nouvel identifiant ajouté : " + this.name;
+          this.messAlert = "Nouvel identifiant ajouté : " + this.name;
           console.log(this.messAlert);
           this.showAlert=true;
+          console.log(this.element);
           setTimeout(()=>{
             this.showAlert=false;
           },6000);
+
 
         })
         .catch(function(error) {
@@ -761,7 +732,7 @@ export default {
           console.log(error);
         });
     },
-    // get identifiant
+    // get identifiants
     async getIdentifiants() {
       let user = JSON.parse(localStorage.getItem("user"));
       const response = await this.axios.get("http://localhost:3000/api/", {
@@ -771,15 +742,13 @@ export default {
       });
       if (response.status === 200 && user !== "") {
         this.identifiants = response.data;
+        this.detailElement(this.identifiants[0]);
       } else {
         console.log("Erreur");
       }
       if (user === "") {
         console.log("Connectez-vous")
       }
-    },
-    // definit le text selon la longueur deu mot de passe
-    check() {
     },
     // affiche et cache le mot de passe
     displayPassword() {
