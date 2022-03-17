@@ -21,11 +21,11 @@
               <span style="margin-left: 10px;">Favoris</span>
             </a>
             <br />
-            <a
-              href="#"
+            <div
+              class="toggleMenu"
               v-b-toggle.categories
               style="cursor: pointer; position: relative; top: 20px"
-            >CATÉGORIES</a>
+            >CATÉGORIES</div>
             <b-collapse id="categories" class="categories">
               <a href="#" id="categorie-inner" v-on:click="identifiantFilterKey = 'identifiant' ">
                 <font-awesome-icon icon="key" />
@@ -42,6 +42,17 @@
                 <span style="margin-left: 10px;">cartes de crédit</span>
               </a>
               <br />
+            </b-collapse>
+            <div
+              class="toggleMenu"
+              v-b-toggle.faceRecognize
+              style="cursor: pointer; position: relative; top: 20px"
+            >RECONNAISSANCE FACIALE</div>
+            <b-collapse id="faceRecognize" class="categories">
+              <a href="#">
+                <font-awesome-icon icon="user" />
+                <span style="margin-left: 10px;">Configurer</span>
+              </a>
             </b-collapse>
           </div>
         </div>
@@ -509,7 +520,7 @@ export default {
       showWindowLog: true,
       showWindowSign: true,
       showAlert: false,
-
+      user: '',
       search: "",
       name: "",
       username: "",
@@ -557,6 +568,22 @@ export default {
   },
   mounted() {
     // this.credentials = localStorage.getItem("user");
+    if (localStorage) {
+      this.user = JSON.parse(localStorage.getItem("user"));
+      if(!this.user){
+        console.log('pas co');
+        this.$router.push({ name: 'Login' })
+      }else if(this.user.token){
+        console.log('connecté');
+        console.log(this.user.token);
+      }else{
+        this.$router.push({ name: 'Login' })
+      }
+    }else{
+      console.log('pas co');
+      this.$router.push({ name: 'Login' })
+    }
+
     this.check();
     this.idImage =  Math.floor(Math.random() * 1000);
     this.imageItem += this.idImage;
@@ -634,6 +661,7 @@ export default {
           this.showWindowLog = true;
           localStorage.clear();
           this.identifiants = [];
+          this.$router.push({ name: 'Login' });
         })
         .catch(function(error) {
           console.log(error);
@@ -904,6 +932,9 @@ li {
 a {
   color: white;
   text-decoration: none !important;
+}
+.toggleMenu {
+  color: white;
 }
 
 a:hover {
