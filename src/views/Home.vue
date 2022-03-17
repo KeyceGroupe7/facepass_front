@@ -2,7 +2,7 @@
   <div id="home">
     <section id="top">
       <b-container>
-            <div class="col-6">
+            <div class="col-sm-6">
               <h1>Bienvenue sur FacePass</h1>
               <p>Le gestionnaire de mot de passe intuitif et sécurisé</p>
               <button class="btn btn-light">S'inscrire</button>
@@ -13,20 +13,20 @@
       </section>
         <section id="middle">
           <b-container>
-            <div class="row">
-              <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h2>
-              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet rerum voluptatem rem.</p>
+            <div class="col-sm-6 row">
+              <h2>Un gestionnaire, des avantages </h2>
+              <p>Evolutif selon vos besoins, qualitatif en toutes <br> circonstances !</p>
             </div>
           </b-container>
         <b-container>
-          <div class="row justify-content-between">
-            <article class="col-3 custom-card card">
+          <div class="row justify-content-between cartes">
+            <article class="col-sm-3 custom-card card">
               <img src="../assets/icon-scan.png" title="Gestionnaire sécurité et chiffré" class="image">
             </article>
-            <article class="col-3 custom-card card">
+            <article class="col-sm-3 custom-card card">
               <img src="../assets/icon-scan.png" title="Reconnaissance faciale" class="image">
             </article>
-            <article class="col-3 custom-card card">
+            <article class="col-sm-3 custom-card card">
               <img src="../assets/icon-scan.png" title="Projet open source" class="image">
             </article>
           </div>
@@ -35,20 +35,20 @@
         <section>
             <footer class="bas">
               <div class="row justify-content-between">
-                <div class="col-3 bas">
-                  <h3>Content</h3>
+                <div class="col-sm-3 bas">
+                  <h3>Contenu</h3>
                   <li>test</li>
                   <li>test2</li>
                   <li>test3</li>
                 </div>
-                <div class="col-3 bas">
-                  <h3>Content</h3>
+                <div class="col-sm-3 bas">
+                  <h3>Contenu</h3>
                   <li>test</li>
                   <li>test2</li>
                   <li>test3</li>
                 </div>
-                <div class="col-3 bas">
-                  <h3>Content</h3>
+                <div class="col-sm-3 bas">
+                  <h3>Contenu</h3>
                   <li>test</li>
                   <li>test2</li>
                   <li>test3</li>
@@ -96,7 +96,7 @@ export default {
 background-color: #353a40;  
 }
 
-.col-6{
+.col-sm-6{
   color: white;
   margin-left: 1%;
 
@@ -122,6 +122,11 @@ background-color: #353a40;
   background-color: #261968;
   color: white;
   padding: 3%;
+}
+
+.cartes{
+  padding-bottom: 100px;
+  background-color: #353a40
 }
 
 </style>
