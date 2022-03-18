@@ -49,3 +49,31 @@ npm install
 npm run dev
 ```
 
+### Mise en place du projet 
+
+Le projet se compose de deux repos.
+
+Un repos front : VueJS
+Un repas api: nodeJS
+
+Afin de mettre en place ces deux projets sur votre environnement en local il vous faudra ::
+
+-```Git clone https://github.com/KeyceGroupe7/facepass_front.git && git clone https://github.com/KeyceGroupe7/facepass_back.git```
+- Faire un ```npm Install``` a la racine des deux repos.
+- Créer un compte mongoDB et créer une base de db.
+
+Une fois la base de donnée crée il vous faudra récupérer la string du cluster du type : 
+```@cluster0.xxx.mongodb.net/nomDeLaDB?retryWrites=true&w=majority```
+
+Ensuite récupérer cette string et copier la dans le fichier ```database.js``` et la coller dans le propriété cluster.
+
+Mettre votre username et votre password dans le meme fichier.
+
+Après avoir saisie les informations dans le fichier database.js il vous faudra lancer les serveurs avec la commande 
+
+API : ```node server.js```
+FRONT : ```npm run dev ```
+
+### En cas de problème :
+supprimer les dossier node_modules et relancer la commande npm i
+
