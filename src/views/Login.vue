@@ -1,8 +1,24 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <div id="login">
+    </br>
+    <h3 class="text-white">Bienvenue !</h3>
+    <div id="connect" v-if="connectPage">
     <!-- connexion user  -->
-    <b-container class="pt-5">
-      <h3 class="text-white">Content de vous revoir !</h3>
+      <div class="butttongroup text-center">
+      <button
+        class="btn btn-dark mt-2"
+        @click="login()"
+      >
+        Connexion
+      </button>
+      <button
+        class="btn btn-info mt-2"
+        @click="LogToSign"
+      >
+        Inscription
+      </button>
+      </div>
+      <b-container class="pt-5">
       <div class="col-6 mb-5 card shadow mx-auto">
         <h4 class="mt-2 mb-0">Connexion</h4>
         <hr>
@@ -26,25 +42,37 @@
             type="password"
             required
           ></b-form-input>
-          <button
-            class="btn btn-dark mt-2 w-100"
-            @click="login()"
-          >
-            Connexion
-          </button>
-          <button
-            class="btn btn-info mt-2 w-100"
-            @click="getFaceRecognize()"
-          >
-            Utiliser la reconnaissance faciale
-          </button>
+
           <p v-if="this.passwordAlert.length>1" class="alert mt-2">{{ passwordAlert }}</p>
         </b-form-group>
       </div>
     </b-container>
+      <div class="text-center">
+      <button
+        class="btn btn-primary mt-2 w-25"
+        @click="getFaceRecognize()"
+      >
+        Utiliser la reconnaissance faciale
+      </button>
+      </div>
+  </div>
 
+  <div class="signup" v-if="signupPage">
+    <div class="butttongroup text-center">
+      <button
+        class="btn btn-dark mt-2"
+        @click="signUp()"
+      >
+        S'inscrire
+      </button>
+      <button
+        class="btn btn-info mt-2"
+        @click="SignToLog()"
+      >
+        Connexion
+      </button>
+    </div>
     <b-container class="mt-5">
-      <h3 class="text-white">Première fois ? Inscrivez-vous !</h3>
       <div class="col-6 card shadow mx-auto">
         <h4 class="mt-2 mb-0">Inscription</h4>
         <hr>
@@ -81,16 +109,11 @@
             required
           ></b-form-input>
           <p v-if="this.newPasswordConfirmAlert.length>1" class="alert mt-2">{{ newPasswordConfirmAlert }}</p>
-          <button
-            class="btn btn-dark mt-2 w-100"
-            @click="signUp()"
-          >
-            Connexion
-          </button>
         </b-form-group>
       </div>
     </b-container>
 
+  </div>
   </div>
 
 </template>
@@ -102,6 +125,8 @@ export default {
   data() {
     return {
       newPasswordConfirmAlert: '',
+      connectPage:true,
+      signupPage:false,
       passwordAlert: '',
       credentials: {
         email: "",
@@ -143,10 +168,11 @@ export default {
         })
         .catch(function(error) {
           console.log(error);
+          this.passwordAlert = 'Identifiants inconnus';
+
 
         });
         console.log(this.passwordAlert);
-          this.passwordAlert = 'Identifiants inconnus'
       }
     },
     signUp() {
@@ -179,6 +205,20 @@ export default {
       }
 
     },
+
+    LogToSign() {
+      this.connectPage= false;
+      this.signupPage= true;
+      this.newCredentials.email= '';
+      this.newCredentials.password= '';
+    },
+
+    SignToLog() {
+      this.signupPage= false;
+      this.connectPage= true;
+      this.credentials.email= '';
+      this.credentials.password= '';
+    },
   },
   created() {
   }
@@ -186,6 +226,10 @@ export default {
 </script>
 
 <style scoped>
+h3 {
+  text-align: center;
+}
+
 #login{
   background: linear-gradient(332deg, rgba(130,137,232,1) 0%, rgba(28,18,88,1) 56%);
 }
@@ -193,9 +237,20 @@ export default {
 #login{
   background: rgb(130,137,232);
   background: linear-gradient(332deg, rgba(130,137,232,1) 0%, rgba(28,18,88,1) 56%);
+  height: calc(100vh - 56px);
 }
 .alert{
   color: rgb(224 135 135);
   padding: 5px 8px;
+}
+
+.butttongroup{
+  margin-top: 20px;
+}
+
+button{
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 10%;
 }
 </style>
