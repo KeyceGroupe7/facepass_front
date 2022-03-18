@@ -13,7 +13,7 @@
       </section>
         <section id="middle">
           <b-container>
-            <div class="col-sm-6 row">
+            <div class="col-sm-6 row tmid">
               <h2>Un gestionnaire, des avantages </h2>
               <p>Evolutif selon vos besoins, qualitatif en toutes <br> circonstances !</p>
             </div>
@@ -21,39 +21,31 @@
         <b-container>
           <div class="row justify-content-between cartes">
             <article class="col-sm-3 custom-card card">
-              <img src="../assets/icon-scan.png" title="Gestionnaire sécurité et chiffré" class="image">
+              <img src="../assets/lock.png" title="Gestionnaire sécurité et chiffré" class="image">
+              <h5>Gestionnaire sécurisé et chiffré</h5>
             </article>
             <article class="col-sm-3 custom-card card">
-              <img src="../assets/icon-scan.png" title="Reconnaissance faciale" class="image">
+              <img src="../assets/new_icon-scan.png" title="Reconnaissance faciale" class="image">
+              <h5>Reconnaissance faciale</h5>
             </article>
             <article class="col-sm-3 custom-card card">
-              <img src="../assets/icon-scan.png" title="Projet open source" class="image">
+              <img src="../assets/github.png" title="Projet open source" class="image">
+              <h5>Projet open source</h5>
             </article>
           </div>
         </b-container>
         </section>
         <section>
             <footer class="bas">
-              <div class="row justify-content-between">
-                <div class="col-sm-3 bas">
-                  <h3>Contenu</h3>
-                  <li>test</li>
-                  <li>test2</li>
-                  <li>test3</li>
+                <div class="bas">
+                  <h3>FacePass</h3>
+                  <router-link class="nav-link" to="/home">Accueil</router-link>
+                  <router-link class="nav-link" to="/login">Connexion</router-link>
+                  <!--<li><a href="about">A propos</a></li>-->
                 </div>
-                <div class="col-sm-3 bas">
-                  <h3>Contenu</h3>
-                  <li>test</li>
-                  <li>test2</li>
-                  <li>test3</li>
-                </div>
-                <div class="col-sm-3 bas">
-                  <h3>Contenu</h3>
-                  <li>test</li>
-                  <li>test2</li>
-                  <li>test3</li>
-                </div>
-              </div>
+            </footer>
+            <footer class="copyr">
+              <p>FacePass Tout droits réservés</p>
             </footer>
         </section>
     </div> 
@@ -109,6 +101,7 @@ background-color: #353a40;
 
 .custom-card{
   color: black;
+  background-color: #ffffff;
 }
 
 .image{
@@ -126,7 +119,23 @@ background-color: #353a40;
 
 .cartes{
   padding-bottom: 100px;
-  background-color: #353a40
+  background-color: #353a40;
+  text-align: center;
+}
+
+.copyr{
+  background-color: #353a40;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+  
+}
+
+.tmid{
+  padding-top: 75px;
+  padding-bottom: 50px;
 }
 
 </style>
