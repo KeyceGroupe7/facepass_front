@@ -41,9 +41,14 @@ export default {
 <style>
 h1, h2, h3, h4, h5, h6{
   font-family: 'Maven Pro', sans-serif;
-  font-weight: bold;
+  font-weight: bold!important;
 }
+
 .nav-link{
   margin-left: 20px;
+}
+
+.relative{
+  position: relative;
 }
 </style>

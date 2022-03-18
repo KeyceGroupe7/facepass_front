@@ -142,7 +142,6 @@ export default {
           }
         })
         .catch(function(error) {
-          console.log('ooooooooooooooooooooh');
           console.log(error);
           
         });
@@ -182,8 +181,6 @@ export default {
     },
   },
   created() {
-    // get des identifiants tout les 1sec
-    // setInterval(() => this.getIdentifiants(), 1000);
   }
 };
 </script>
