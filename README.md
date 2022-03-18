@@ -1,18 +1,36 @@
-# mypasswords
+# Facepass
 
-> A Vue.js project
+Projet d'un gestionnaire de mot de passe dont la connexion peut se faire par reconnaissance faciale.
 
-## Build Setup
+## Contexte
+
+
+### Consignes
+
+Dans le cadre d'un Hackathon, nous avions une semaine pour réaliser un projet qui améliore un outil de cybersécurité déjà existant. Nous avons donc choisi un gestionnaire de mot de passe comme base puis nous lui avons ajouté des nouvelles fonctionnalités.
+
+Fait par Slimen, François, Yanis, Illian, Jibril, Younes, Leila, Luca.
+
+### Langages et outils utilisés
+
+* Html, CSS, JS - Programmation web basique
+* Vue.js - Partie front-end pour rendre la page dynamique
+* Node.js - Partie back-end
+* MariaDB - Gestion de la base de données
+* Git - Partage et mise en ligne des fichiers
+* Trello - Répartition des tâches
+
+
+
+
 
 ``` bash
-# install dependencies
-npm install
+# Lancer le serveur (dossier back-end)
+node server.js
 
-# serve with hot reload at localhost:8080
+# Lancer le site (dossier front-end)
+npm install
 npm run dev
 
-# build for production with minification
-npm run build
 ```
 
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
