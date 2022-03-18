@@ -11,7 +11,7 @@
             <router-link class="nav-link" to="/home">Home</router-link>
             <router-link class="nav-link" to="/dashboard">Dashboard</router-link>
             <router-link class="nav-link" to="/about">A propos</router-link>
-            <router-link class="ml-auto nav-link" to="/login">Connexion</router-link>
+            <router-link class="ml-auto nav-link" to="/login" v-if="this.$route.name !== 'Dashboard'">Connexion</router-link>
 
           </b-navbar-nav>
         </b-collapse>
@@ -27,13 +27,13 @@ export default {
   name: "app",
   data() {
     return {
-    
+
     }
   },
   mounted() {
   },
   methods:{
-    
+
   }
 };
 </script>
