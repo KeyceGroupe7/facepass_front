@@ -23,6 +23,7 @@ Fait par Slimen, François, Yanis, Illian, Jibril, Younes, Leila, Luca.
 
 
 
+### Lancer le projet
 
 ``` bash
 # Lancer le serveur (dossier back-end)
@@ -31,6 +32,5 @@ node server.js
 # Lancer le site (dossier front-end)
 npm install
 npm run dev
-
 ```
 
