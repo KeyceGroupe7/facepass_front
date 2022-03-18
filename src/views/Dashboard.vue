@@ -2,7 +2,7 @@
   <div id="app">
     <div class="notif">
       <!--    <div class="container" style="width: 100%; height: 90vh; border-radius: 20px">-->
-      <b-alert v-model="showAlert" variant="primary" class="notification-custom" dismissible fade>
+      <b-alert v-model="showAlert" variant="primary" class="notification-custom prioAlert" dismissible fade>
       {{ this.messAlert }}
       </b-alert>
     </div>
@@ -662,9 +662,7 @@ export default {
           this.getIdentifiants();
           console.log("Objet crée");
           this.messAlert = "Nouvel identifiant ajouté : " + this.name;
-          console.log(this.messAlert);
           this.showAlert=true;
-          console.log(this.element);
           setTimeout(()=>{
             this.showAlert=false;
           },6000);
@@ -705,7 +703,6 @@ export default {
         .then(response => {
           this.getIdentifiants();
           this.messAlert = "Identifiant modifié : " + element.name;
-          console.log(element.name);
           this.showAlert=true;
           setTimeout(()=>{
             this.showAlert=false;
@@ -727,6 +724,11 @@ export default {
         .then(response => {
           console.log("Objet supprimé");
           this.getIdentifiants();
+          this.messAlert = "L'identifiant suivant a été supprimé : " + this.element.name;
+          this.showAlert=true;
+          setTimeout(()=>{
+            this.showAlert=false;
+          },6000);
         })
         .catch(function(error) {
           console.log(error);
@@ -981,6 +983,10 @@ a:hover {
 .notification-custom {
   position: absolute;
   top: 40px;
+}
+
+.prioAlert{
+  z-index: 2;
 }
 
 .banniere {

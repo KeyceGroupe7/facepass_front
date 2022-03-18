@@ -188,7 +188,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #login{
   background: rgb(130,137,232);
   background: linear-gradient(332deg, rgba(130,137,232,1) 0%, rgba(28,18,88,1) 56%);
