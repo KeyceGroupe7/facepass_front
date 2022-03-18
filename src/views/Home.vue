@@ -5,7 +5,7 @@
             <div class="col-sm-6">
               <h1>Bienvenue sur FacePass</h1>
               <p>Le gestionnaire de mot de passe intuitif et sécurisé</p>
-              <button class="btn btn-light">S'inscrire</button>
+              <router-link class="btn btn-light" to="/login">S'inscrire</router-link>
               <br><br>
               <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam ut officia sunt animi suscipit hic eveniet debitis officiis id, adipisci dolor exercitationem quo architecto, excepturi cupiditate illo, vel recusandae quisquam? Soluta culpa facilis fugiat reprehenderit officiis earum asperiores deleniti neque.</p>
         </div>
